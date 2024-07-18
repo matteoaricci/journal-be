@@ -29,7 +29,8 @@ func (s *APIServer) Run() error {
 	userHandler := user.NewHandler()
 	userHandler.RegisterRoutes(subRouter)
 
-	journalHandler := journal.NewHandler()
+	journalStore := journal.NewStore(s.db)
+	journalHandler := journal.NewHandler(journalStore)
 	journalHandler.RegisterRoutes(subRouter)
 
 	log.Println("Listening on", s.addr)

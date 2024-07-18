@@ -2,6 +2,7 @@ package journal
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/matteoaricci/journal-be/types"
 )
@@ -27,6 +28,10 @@ func (s *Store) GetAllJournals() (*types.Journal, error) {
 		if err != nil {
 			return nil, err
 		}
+	}
+
+	if j == nil {
+		return nil, fmt.Errorf("unable to find any journals")
 	}
 
 	return j, nil

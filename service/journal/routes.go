@@ -9,20 +9,24 @@ import (
 )
 
 type Handler struct {
-	store *types
+	store types.JournalStore
 }
 
-func NewHandler() *Handler {
-	return &Handler{}
+func NewHandler(store types.JournalStore) *Handler {
+	return &Handler{store: store}
 }
 
 func (h *Handler) RegisterRoutes(router *mux.Router) {
-	router.HandleFunc("/journals", h.getJournal).Methods("GET")
+	router.HandleFunc("/journals", h.getJournals).Methods("GET")
 }
 
-func (h *Handler) getJournal(w http.ResponseWriter, r *http.Request) {
-	var payload types.Journal
-	if err := utils.ParseJSON(r, payload); err != nil {
-		utils.WriteError(w, http.StatusBadRequest, err)
+func (h *Handler) getJournals(w http.ResponseWriter, r *http.Request) {
+	j, err := h.store.GetAllJournals()
+
+	if err != nil {
+		utils.WriteError(w, http.StatusNotFound, err)
+		return
 	}
+
+	utils.WriteJSON(w, http.StatusAccepted, &j)
 }

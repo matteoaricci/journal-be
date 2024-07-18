@@ -5,3 +5,7 @@ type Journal struct {
 	Body string `json:"body"`
 	ID string `json:"id"`
 }
+
+type JournalStore interface {
+	GetAllJournals() (*Journal, error)
+}
