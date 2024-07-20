@@ -1,6 +1,6 @@
 -- +goose Up
 CREATE TABLE journals (
-    id int NOT NULL,
+    id int NOT NULL AUTO_INCREMENT,
     title text,
     body text,
     created_at timestamp,

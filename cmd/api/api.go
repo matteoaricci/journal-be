@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/gorilla/handlers"
 	"github.com/matteoaricci/journal-be/service/journal"
 	"github.com/matteoaricci/journal-be/service/user"
 )
@@ -34,5 +35,9 @@ func (s *APIServer) Run() error {
 	journalHandler.RegisterRoutes(subRouter)
 
 	log.Println("Listening on", s.addr)
-	return http.ListenAndServe(s.addr, router)
+	return http.ListenAndServe(s.addr, handlers.CORS(
+		handlers.AllowedOrigins([]string{"*"}),
+		handlers.AllowedMethods([]string{"GET", "POST", "OPTIONS"}),
+		handlers.AllowedHeaders([]string{"Content-Type"}),
+	)(router))
 }

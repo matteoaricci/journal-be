@@ -11,12 +11,13 @@ func ParseJSON(r *http.Request, payload any) error {
 		return fmt.Errorf("missing request body")
 	}
 
-	return nil
+	return json.NewDecoder(r.Body).Decode(payload)
 }
 
 func WriteJSON(w http.ResponseWriter, status int, v any) error {
 	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(status)
+	// w.Header().Add("Access-Control-Allow-Origin", "*")
+	// w.WriteHeader(status)
 
 	return json.NewEncoder(w).Encode(v)
 }

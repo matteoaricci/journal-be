@@ -12,3 +12,6 @@ db-status:
 
 up:
 	@GOOSE_DRIVER=mysql GOOSE_DBSTRING="root:password@/journal_be" goose -dir="db/migrations" up
+
+down:
+	@GOOSE_DRIVER=mysql GOOSE_DBSTRING="root:password@/journal_be" goose -dir="db/migrations" down
