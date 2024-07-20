@@ -2,7 +2,6 @@ package journal
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/matteoaricci/journal-be/types"
 )
@@ -15,26 +14,24 @@ func NewStore(db *sql.DB) *Store {
 	return &Store{db: db}
 }
 
-func (s *Store) GetAllJournals() (*types.Journal, error) {
+func (s *Store) GetJournals() ([]types.Journal, error) {
 	rows, err := s.db.Query("SELECT * FROM journals")
 
 	if err != nil {
 		return nil, err
 	}
 
-	j := new(types.Journal)
+	journals := make([]types.Journal, 0)
 	for rows.Next() {
-		j, err = scanRowIntoJournal(rows)
+		j, err := scanRowIntoJournal(rows)
 		if err != nil {
 			return nil, err
 		}
+
+	journals = append(journals, *j)
 	}
 
-	if j == nil {
-		return nil, fmt.Errorf("unable to find any journals")
-	}
-
-	return j, nil
+	return journals, nil
 
 }
 

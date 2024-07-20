@@ -7,5 +7,5 @@ type Journal struct {
 }
 
 type JournalStore interface {
-	GetAllJournals() (*Journal, error)
+	GetJournals() ([]Journal, error)
 }
